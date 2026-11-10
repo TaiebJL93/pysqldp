@@ -1,0 +1,135 @@
+db csample1k
+q perf-queries-3/histogram-count-left.sql
+1.332
+1.309
+1.394
+1.276
+1.427
+1.312
+1.392
+1.384
+1.270
+1.252
+q perf-queries-3/histogram-count-orig.sql
+1.047
+1.003
+1.087
+1.075
+1.086
+0.951
+1.030
+1.148
+1.083
+1.115
+q perf-queries-3/histogram-count-right.sql
+1.323
+1.409
+1.290
+1.287
+1.342
+1.433
+1.486
+1.502
+1.490
+1.513
+q perf-queries-3/histogram-count-union.sql
+1.530
+1.433
+1.437
+1.600
+1.530
+1.616
+1.426
+1.508
+1.468
+1.494
+db csample1m
+q perf-queries-3/histogram-count-left.sql
+3.867
+3.765
+3.848
+3.863
+3.888
+3.843
+3.773
+3.884
+3.673
+3.605
+q perf-queries-3/histogram-count-orig.sql
+3.361
+3.423
+3.345
+3.364
+3.561
+3.385
+3.413
+3.530
+3.435
+3.506
+q perf-queries-3/histogram-count-right.sql
+3.834
+3.677
+3.546
+3.721
+3.469
+3.611
+3.588
+3.462
+3.463
+3.668
+q perf-queries-3/histogram-count-union.sql
+4.371
+4.118
+4.214
+4.159
+4.129
+4.202
+4.141
+4.204
+4.236
+4.362
+db csample10m
+q perf-queries-3/histogram-count-left.sql
+25.552
+25.119
+24.900
+25.723
+25.849
+25.694
+25.613
+25.778
+24.460
+25.753
+q perf-queries-3/histogram-count-orig.sql
+24.115
+24.425
+24.044
+24.164
+24.303
+23.532
+23.691
+24.171
+24.037
+24.025
+q perf-queries-3/histogram-count-right.sql
+24.383
+22.815
+24.379
+22.760
+24.333
+24.309
+23.849
+24.183
+23.210
+24.174
+q perf-queries-3/histogram-count-union.sql
+30.354
+29.873
+30.176
+30.035
+30.129
+30.090
+30.113
+29.830
+29.970
+30.240

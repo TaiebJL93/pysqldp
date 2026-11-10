@@ -1,0 +1,3 @@
+SELECT
+  APPROX_PERCENTILE(v1, 0.9) AS p90_v1
+FROM table_b;

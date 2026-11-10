@@ -1,0 +1,27 @@
+---
+databases:
+- database: "test"
+  dialect: "hive"
+  namespace: "public"
+  tables:
+  - table: "te_user"
+    approxRowCount: 8
+    columns:
+    - name: "age"
+      typeName: "DOUBLE"
+      clipLower: 0
+      clipUpper: 80
+      maxFreq: 1
+    - name: "name"
+      canRelease: true
+      maxFreq: 5
+    - name: "p_ingest_date"
+      canRelease: true
+  - table: "te_user2"
+    approxRowCount: 8
+    columns:
+    - name: "age"
+    - name: "name"
+      maxFreq: 5
+    - name: "p_ingest_date"
+      canRelease: true

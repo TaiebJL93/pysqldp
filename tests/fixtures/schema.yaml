@@ -1,0 +1,223 @@
+---
+databases:
+- database: "test"
+  dialect: "hive"
+  namespace: "public"
+  tables:
+  - table: "orders"
+    approxRowCount: 1000000
+    columns:
+    - name: "order_id"
+    - name: "order_date"
+      canRelease: true
+    - name: "customer_id"
+      maxFreq: 100
+    - name: "product_id"
+      maxFreq: 500
+      canRelease: true
+      domainSet: "products.product_id"
+    - name: "quantity"
+    - name: "order_cost"
+      clipLower: 0
+      clipUpper: 10
+  - table: "products"
+    isPublic: true
+    columns:
+    - name: "product_id"
+      maxFreq: 300
+    - name: "name"
+    - name: "price"
+  - table: "customers"
+    columns:
+    - name: "customer_id"
+      domainSet: "customers.customer_id"
+      maxFreq: 1
+      canRelease: true
+    - name: "name"
+      isTainted: true
+    - name: "address"
+      isTainted: true
+      maxFreq: 5
+  - table: "recommendations"
+    columns:
+    - name: "customer_id"
+      maxFreq: 250
+    - name: "product_id"
+      maxFreq: 2000
+
+- database: "test2"
+  dialect: "hive"
+  namespace: ""
+  tables:
+  - table: "my_table"
+    columns:
+    - name: "my_col"
+    - name: "structured_col"
+      fields:
+      - name: "field1"
+      - name: "field2"
+        fields:
+        - name: "subfield1"
+  - table: "subschema.tbl"
+    columns:
+    - name: "col"
+
+- database: "experiments"
+  dialect: "presto"
+  namespace: ""
+  tables:
+  - table: "table_a"
+    isPretruncated: true
+    columns:
+    - name: "a_id"
+      maxFreq: 1
+    - name: "g0"
+      domainSet: "g0_domain.g0"
+      canRelease: true
+  - table: "table_b"
+    truncationOrder: "ja1,ja2"
+    pretruncatedCopy: "table_b_pretruncated"
+    columns:
+    - name: "b_id"
+    - name: "g0"
+      domainSet: "g0_domain.g0"
+      canRelease: true
+    - name: "g1"
+      domainSet: "g1_g2_domain.g1"
+      canRelease: true
+    - name: "g2"
+      domainSet: "g1_g2_domain.g2"
+      canRelease: true
+    - name: "ja1"
+      maxFreq: 25
+    - name: "ja2"
+      maxFreq: 100
+    - name: "v1"
+      typeName: "DOUBLE"
+      clipLower: 0
+      clipUpper: 10000000
+    - name: "v2"
+      typeName: "DOUBLE"
+      binsStart: 0
+      binsEnd: 15000000
+      binsStep: 150000
+  - table: "table_c"
+    isPretruncated: true
+    columns:
+    - name: "ja"
+      maxFreq: 1
+    - name: "g0"
+      domainSet: "g0_domain.g0"
+      canRelease: true
+    - name: "v3"
+      typeName: "DOUBLE"
+      clipLower: -5000
+      clipUpper: 9995000
+    - name: "v4"
+      typeName: "DOUBLE"
+      clipLower: -300000
+      clipUpper: 300000
+  - table: "g0_domain"
+    columns:
+    - name: "g0"
+  - table: "g1_g2_domain"
+    columns:
+    - name: "g1"
+    - name: "g2"
+  - table: "v1_bins"
+    columns:
+    - name: "lo"
+      canRelease: true
+    - name: "hi"
+      canRelease: true
+  - table: "v2_bins"
+    columns:
+    - name: "lo"
+      canRelease: true
+    - name: "hi"
+      canRelease: true
+  - table: "table_b_with_breakdown"
+    columns:
+    - name: "b_id"
+      maxFreq: 1
+    - name: "g1"
+      domainSet: "g1_g2_domain_with_breakdown.g1"
+      canRelease: true
+    - name: "g2"
+      domainSet: "g1_g2_domain_with_breakdown.g2"
+      canRelease: true
+  - table: "g1_g2_domain_with_breakdown"
+    useBreakdown: "breakdown"
+    columns:
+    - name: "g1"
+    - name: "g2"
+    - name: "breakdown"
+  - table: "table_b_with_single_domain"
+    columns:
+    - name: "b_id"
+      maxFreq: 1
+    - name: "g0"
+      domainSet: "table_b_single_domain.g0"
+      canRelease: true
+    - name: "g1"
+      domainSet: "table_b_single_domain.g1"
+      canRelease: true
+    - name: "g2"
+      domainSet: "table_b_single_domain.g2"
+      canRelease: true
+  - table: "table_b_single_domain"
+    useBreakdown: "breakdown"
+    columns:
+    - name: "g0"
+      crossMarginal: true
+    - name: "g1"
+    - name: "g2"
+    - name: "breakdown"
+  - table: "table_b_pretruncated"
+    isPretruncated: true
+    columns:
+    - name: "b_id"
+    - name: "g0"
+      domainSet: "g0_domain.g0"
+      canRelease: true
+    - name: "g1"
+      domainSet: "g1_g2_domain.g1"
+      canRelease: true
+    - name: "g2"
+      domainSet: "g1_g2_domain.g2"
+      canRelease: true
+    - name: "ja1"
+      maxFreq: 25
+    - name: "ja2"
+      maxFreq: 100
+    - name: "v1"
+      typeName: "DOUBLE"
+      clipLower: 0
+      clipUpper: 10000000
+    - name: "v2"
+      typeName: "DOUBLE"
+      binsStart: 0
+      binsEnd: 15000000
+      binsStep: 150000
+
+- database: "statdptest"
+  dialect: "unknown"
+  namespace: ""
+  tables:
+  - table: "queries"
+    columns:
+    - name: "category"
+      canRelease: true
+    - name: "val"
+      typeName: "DOUBLE"
+      clipLower: 0.0
+      clipUpper: 2.0
+  - table: "prequery"
+    columns:
+    - name: "category"
+      canRelease: true
+    - name: "moons"
+      typeName: "DOUBLE"
+      binsStart: 0.0
+      binsEnd: 10.0
+      binsStep: 1.0

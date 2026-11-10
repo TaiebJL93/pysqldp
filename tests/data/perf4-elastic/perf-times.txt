@@ -1,0 +1,201 @@
+db bsample1k
+q perf-queries/elastic-cdf-max-join-actual.sql
+1.123
+1.064
+1.021
+1.115
+1.104
+1.049
+1.157
+1.046
+1.094
+1.015
+q perf-queries/elastic-cdf-max-join-orig.sql
+1.013
+1.005
+1.082
+1.058
+1.022
+1.056
+1.043
+1.059
+1.155
+1.159
+q perf-queries/elastic-cdf-max-join-rw.sql
+1.221
+1.193
+1.214
+1.296
+1.327
+1.333
+1.290
+1.281
+1.501
+1.315
+q perf-queries/elastic-histogram-sum-join-orig.sql
+1.197
+1.083
+1.191
+1.076
+1.148
+1.188
+1.133
+1.101
+1.105
+1.140
+q perf-queries/elastic-histogram-sum-join-rw.sql
+1.343
+1.161
+1.227
+1.243
+1.258
+1.169
+1.239
+1.180
+1.225
+1.249
+q perf-queries/round-trip-only.sql
+1.014
+0.929
+0.930
+1.028
+1.044
+1.130
+1.040
+0.863
+1.127
+0.937
+db bsample1m
+q perf-queries/elastic-cdf-max-join-actual.sql
+3.707
+3.200
+3.312
+3.156
+3.357
+3.184
+3.191
+3.238
+3.600
+3.176
+q perf-queries/elastic-cdf-max-join-orig.sql
+3.566
+3.304
+3.459
+3.321
+3.229
+3.272
+3.857
+3.272
+3.395
+3.539
+q perf-queries/elastic-cdf-max-join-rw.sql
+3.626
+3.347
+3.380
+3.552
+3.405
+3.563
+3.430
+3.438
+3.460
+3.496
+q perf-queries/elastic-histogram-sum-join-orig.sql
+3.349
+3.268
+3.341
+3.315
+3.168
+3.288
+3.415
+3.274
+3.120
+3.386
+q perf-queries/elastic-histogram-sum-join-rw.sql
+3.351
+3.393
+3.344
+3.445
+3.234
+3.424
+3.236
+3.557
+3.402
+3.286
+q perf-queries/round-trip-only.sql
+1.034
+0.970
+1.106
+1.168
+0.945
+1.091
+0.983
+1.003
+0.992
+0.966
+db bsample10m
+q perf-queries/elastic-cdf-max-join-actual.sql
+27.658
+28.273
+25.134
+26.319
+26.093
+26.271
+26.431
+27.532
+26.526
+25.663
+q perf-queries/elastic-cdf-max-join-orig.sql
+25.494
+25.672
+27.069
+26.675
+25.555
+27.664
+26.994
+26.183
+26.928
+25.241
+q perf-queries/elastic-cdf-max-join-rw.sql
+24.648
+26.372
+24.738
+26.554
+26.255
+25.522
+26.186
+23.432
+22.715
+25.078
+q perf-queries/elastic-histogram-sum-join-orig.sql
+25.549
+25.574
+25.336
+25.559
+24.916
+25.912
+25.387
+24.150
+25.975
+25.547
+q perf-queries/elastic-histogram-sum-join-rw.sql
+25.445
+26.061
+25.815
+25.945
+25.819
+25.961
+26.452
+25.934
+25.661
+24.254
+q perf-queries/round-trip-only.sql
+0.735
+0.758
+0.871
+0.780
+0.799
+0.754
+0.860
+0.779
+0.757
+0.759

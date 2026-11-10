@@ -10,6 +10,12 @@ testing the IR proves that. And its answers must stay *close enough to the
 truth to be worth releasing*, which is the accuracy half of the privacy
 trade-off. These tests use a deliberately large epsilon so the noise is small
 enough to assert on; production values are far smaller and far noisier.
+
+The rows are hand-written on purpose. ``tests/data/`` (copied from the Scala
+project) holds the *outputs* of its accuracy and perf experiments — true
+per-bin answers, noisy samples, timings, plots — from MySQL databases that
+were never committed, so there are no input rows there to load. Those files
+are baselines for the accuracy harness, not fixtures for this module.
 """
 
 from __future__ import annotations

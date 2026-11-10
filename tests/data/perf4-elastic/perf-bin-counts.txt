@@ -1,0 +1,101 @@
+mysql> use bsample1k;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select g1, g2, count(*) as cnt from table_b join table_a on ja1 = a_id group by 1, 2 order by 1, 2;
++---------------------+----------------+-----+
+| g1 | g2 | cnt |
++---------------------+----------------+-----+
+| B                   | B              |  20 |
+| B                   | C              |  19 |
+| B                   | D              |  18 |
+| B                   | F              |  16 |
+| B                   | M              |  22 |
+| B                   | P              |  25 |
+| B                   | X              |  15 |
+| C                   | B              |  27 |
+| C                   | C              |  20 |
+| C                   | D              |  15 |
+| C                   | F              |  19 |
+| C                   | M              |  18 |
+| C                   | P              |  23 |
+| C                   | X              |  25 |
+| R                   | B              |  17 |
+| R                   | C              |  14 |
+| R                   | D              |  14 |
+| R                   | F              |  27 |
+| R                   | M              |  14 |
+| R                   | P              |  14 |
+| R                   | X              |  18 |
++---------------------+----------------+-----+
+21 rows in set (0.04 sec)
+
+mysql> use bsample1m
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+
+mysql> select g1, g2, count(*) as cnt from table_b join table_a on ja1 = a_id group by 1, 2 order by 1, 2;
++---------------------+----------------+-------+
+| g1 | g2 | cnt   |
++---------------------+----------------+-------+
+| B                   | B              | 19310 |
+| B                   | C              | 18913 |
+| B                   | D              | 18939 |
+| B                   | F              | 19176 |
+| B                   | M              | 19068 |
+| B                   | P              | 19016 |
+| B                   | X              | 19258 |
+| C                   | B              | 19107 |
+| C                   | C              | 19166 |
+| C                   | D              | 19119 |
+| C                   | F              | 18851 |
+| C                   | M              | 19091 |
+| C                   | P              | 18882 |
+| C                   | X              | 18939 |
+| R                   | B              | 19172 |
+| R                   | C              | 18805 |
+| R                   | D              | 19205 |
+| R                   | F              | 18939 |
+| R                   | M              | 19124 |
+| R                   | P              | 18967 |
+| R                   | X              | 18953 |
++---------------------+----------------+-------+
+21 rows in set (2.33 sec)
+
+mysql> use bsample10m
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select g1, g2, count(*) as cnt from table_b join table_a on ja1 = a_id group by 1, 2 order by 1, 2;
++---------------------+----------------+--------+
+| g1 | g2 | cnt    |
++---------------------+----------------+--------+
+| B                   | B              | 190047 |
+| B                   | C              | 190105 |
+| B                   | D              | 190260 |
+| B                   | F              | 190681 |
+| B                   | M              | 190557 |
+| B                   | P              | 190477 |
+| B                   | X              | 190714 |
+| C                   | B              | 190454 |
+| C                   | C              | 190608 |
+| C                   | D              | 190123 |
+| C                   | F              | 190691 |
+| C                   | M              | 190332 |
+| C                   | P              | 190548 |
+| C                   | X              | 190468 |
+| R                   | B              | 190716 |
+| R                   | C              | 190198 |
+| R                   | D              | 190276 |
+| R                   | F              | 191023 |
+| R                   | M              | 191037 |
+| R                   | P              | 190646 |
+| R                   | X              | 190039 |
++---------------------+----------------+--------+
+21 rows in set (1 min 15.17 sec)
+
+

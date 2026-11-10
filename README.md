@@ -89,6 +89,11 @@ histogram bins (`domainSet`) and release permissions (`canRelease`, `isPublic`,
 `isTainted`) all come from there. The format is unchanged from the Scala
 project, so existing schema files load as-is — see `tests/fixtures/schema.yaml`.
 
+`docs/` carries the Scala project's written specifications, copied verbatim.
+`mechanism_summaries.md` is the normative description of every mechanism and
+`schema.md` of every metadata key; the rest cover its test, accuracy and
+random-testing reports.
+
 ## Mechanisms
 
 | Aggregation | Mechanism | Status |
@@ -112,16 +117,37 @@ default.
 uv run pytest
 ```
 
-Three layers:
+Four layers:
 
 - **Unit tests** per module — schema parsing, IR round-tripping, each analysis,
   each rewriter.
-- **Golden tests** against `tests/golden/*.sql`, the rewritten-SQL outputs
-  committed by the Scala project's smoke tests. Comparison is on the parsed
-  sqlglot AST, so formatting differences do not cause failures.
+- **Golden tests** against the Scala project's committed SQL. Two oracles:
+  `tests/golden/pairs/*/` holds `-orig`/`-rw` query pairs, where the analyst's
+  input is known, so both the mechanism *and* the noise scale must match;
+  `tests/golden/*.sql` is rewritten-only output, which needs a hand-written
+  input query. Comparison is on the parsed sqlglot AST, so formatting
+  differences do not cause failures. Every golden is either reproduced or
+  listed in a `PENDING` dict naming the mechanism it still needs.
 - **Executable tests** that build a small synthetic dataset in DuckDB, run the
   rewritten SQL, and check the result is correctly shaped and within a few
   noise standard deviations of the non-private answer.
+- **Statistical tests** (`tests/test_statdp.py`) that run the emitted SQL
+  through [StatDP](https://github.com/cmla-psu/statdp) on DuckDB to detect
+  violations of the claimed epsilon. This is the only layer that can catch a
+  wrong noise scale — an under-noised query is structurally identical to a
+  correct one — so it is the correctness gate for every new mechanism. It is
+  slow and needs a dependency that is not on PyPI, so it is deselected by
+  default:
+
+  ```bash
+  uv sync --group statdp
+  uv run --group statdp pytest -m slow
+  ```
+
+`tests/data/` holds the Scala project's accuracy and performance *results* —
+true per-bin answers, noisy samples, timings, plots. They are the baselines the
+accuracy harness is compared against; the databases they were produced from
+were never committed, so there are no input rows to load there.
 
 ## Roadmap
 

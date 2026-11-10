@@ -18,6 +18,11 @@ dev = [
     "pytest>=8.0",
     "duckdb>=1.0",
 ]
+# Only for tests/test_statdp.py (`uv run --group statdp pytest -m slow`).
+# StatDP is not on PyPI; pinned to a commit of its GitHub repository.
+statdp = [
+    "statdp @ git+https://github.com/cmla-psu/statdp@d1f1e8fafa1fe15342dc9502654ec241585b9919",
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -28,4 +33,7 @@ packages = ["src/pysqldp"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q"
+addopts = "-q -m 'not slow'"
+markers = [
+    "slow: long statistical tests (StatDP); deselected by default, run with -m slow",
+]

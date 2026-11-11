@@ -23,6 +23,14 @@ dev = [
 statdp = [
     "statdp @ git+https://github.com/cmla-psu/statdp@d1f1e8fafa1fe15342dc9502654ec241585b9919",
 ]
+# Only for tests/test_fabric_spark.py (`uv run --group spark pytest -m spark`).
+# Kept out of `dev` because PySpark is a few hundred megabytes and needs a JVM.
+# Pinned to the 3.5 line because that is the Spark version of Microsoft Fabric
+# Runtime 1.3: the point of the gate is to run on the engine Fabric has, and a
+# 4.x engine would accept SQL that 3.5 might not.
+spark = [
+    "pyspark>=3.5,<4",
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -33,7 +41,8 @@ packages = ["src/pysqldp"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q -m 'not slow'"
+addopts = "-q -m 'not slow and not spark'"
 markers = [
     "slow: long statistical tests (StatDP); deselected by default, run with -m slow",
+    "spark: tests needing a local PySpark session; deselected by default, run with -m spark",
 ]

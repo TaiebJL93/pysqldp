@@ -111,13 +111,53 @@ Queries using a construct that has no sound mechanism raise
 query with too little noise is a privacy failure, so refusing is the only safe
 default.
 
+## Microsoft Fabric
+
+The rewritten query is ordinary SQL, so Fabric needs no adapter: a notebook
+attached to a Lakehouse can run it as it is.
+
+```python
+from pysqldp import Schema, rewrite_fixed_pipeline
+
+db = Schema.load("/lakehouse/default/Files/dp/schema.yaml").database("fabric")
+sql, epsilon_spent = rewrite_fixed_pipeline(
+    db, "SELECT region, SUM(amount) AS total FROM events GROUP BY 1", epsilon=1.0
+)
+spark.sql(sql).show()
+```
+
+- **Install** — either add `pysqldp` to a Fabric Environment's libraries and
+  attach the notebook to it, or `%pip install pysqldp` in the first cell.
+  Requires Python 3.11+, so Runtime 1.3 (Spark 3.5) or later.
+- **Schema** — upload the YAML to the Lakehouse Files area, e.g.
+  `Files/dp/schema.yaml`, which the notebook reads at
+  `/lakehouse/default/Files/dp/schema.yaml`.
+- **`dialect: "spark"` is required**, with `namespace: ""` so table names stay
+  unqualified and resolve against the attached Lakehouse. See
+  [`tests/fixtures/schema_fabric.yaml`](tests/fixtures/schema_fabric.yaml).
+
+[`notebooks/fabric_dp_demo.ipynb`](notebooks/fabric_dp_demo.ipynb) is a
+runnable version of the above — import it with Fabric's *Import notebook*.
+
+The **Warehouse / SQL analytics endpoint is not supported.** T-SQL's `RAND()`
+is a runtime constant per query: one draw is reused for every row, so under bin
+filling every histogram bin would get *identical* noise, which an analyst
+cancels exactly by subtracting two bins. Spark's `rand()` is drawn per row,
+which is what the Laplace mechanism needs, and
+[`tests/test_fabric_spark.py`](tests/test_fabric_spark.py) asserts that
+difference rather than assuming it. A T-SQL dialect would first need a per-row
+random source demonstrated on a live warehouse; Microsoft's T-SQL surface-area
+and limitations pages document neither `RAND()` nor the alternatives
+(`NEWID()`, `CRYPT_GEN_RANDOM()`, `RANGE` window frames), so it cannot be shown
+sound from documentation.
+
 ## Tests
 
 ```bash
 uv run pytest
 ```
 
-Four layers:
+Five layers:
 
 - **Unit tests** per module — schema parsing, IR round-tripping, each analysis,
   each rewriter.
@@ -131,6 +171,17 @@ Four layers:
 - **Executable tests** that build a small synthetic dataset in DuckDB, run the
   rewritten SQL, and check the result is correctly shaped and within a few
   noise standard deviations of the non-private answer.
+- **Spark execution tests** (`tests/test_fabric_spark.py`) that run the emitted
+  SQL on a local PySpark session — the engine Microsoft Fabric uses — and check
+  that every domain bin is present and that noise differs between bins. A local
+  Spark session is slow to start and `pyspark` is a large download, so they are
+  deselected by default:
+
+  ```bash
+  uv sync --group spark
+  uv run --group spark pytest -m spark
+  ```
+
 - **Statistical tests** (`tests/test_statdp.py`) that run the emitted SQL
   through [StatDP](https://github.com/cmla-psu/statdp) on DuckDB to detect
   violations of the claimed epsilon. This is the only layer that can catch a

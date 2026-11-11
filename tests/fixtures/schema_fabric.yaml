@@ -1,0 +1,33 @@
+---
+# Schema for the Microsoft Fabric / Spark path, used by tests/test_fabric_spark.py
+# and mirrored by the notebook in notebooks/fabric_dp_demo.ipynb.
+#
+# Two keys carry the Fabric specifics:
+#
+# * dialect "spark" -- sqlglot parses and generates Spark SQL, which is what a
+#   Fabric notebook's spark.sql() accepts. It also means RAND() is Spark's
+#   per-row generator, which the Laplace mechanism requires.
+# * namespace "" -- a notebook attached to a Lakehouse resolves unqualified
+#   table names against that Lakehouse, so emitting a qualified name would be
+#   wrong.
+#
+# The tables mirror the inline schema in tests/test_executable.py so the DuckDB
+# and Spark gates test the same shape on two engines.
+databases:
+- database: "fabric"
+  dialect: "spark"
+  namespace: ""
+  tables:
+  - table: "events"
+    columns:
+    - name: "region"
+      canRelease: true
+      domainSet: "region_domain.region"
+    - name: "amount"
+      typeName: "DOUBLE"
+      clipLower: 0
+      clipUpper: 10
+  - table: "region_domain"
+    isPublic: true
+    columns:
+    - name: "region"
